@@ -1,4 +1,4 @@
-name: Build
+name: Firmware Build
 
 on:
   push:
@@ -13,8 +13,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Verify Runner
+      - name: Build Docker Image
         run: |
-          echo "GitHub Actions is working"
-          pwd
-          ls -la
+          docker build -t firmware-builder .
