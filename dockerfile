@@ -39,7 +39,7 @@ WORKDIR /workspace
 # Copy SDK and project
 COPY sdk /workspace/sdk
 COPY project /workspace/project
-COPY CMakeLists.txt /workspace/CMakeLists.txt
+# COPY CMakeLists.txt /workspace/CMakeLists.txt
 COPY build.sh /workspace/build.sh
 
 RUN chmod +x /workspace/build.sh
