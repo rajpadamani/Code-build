@@ -16,3 +16,7 @@ jobs:
       - name: Build Docker Image
         run: |
           docker build -t firmware-builder .
+
+      - name: Build Firmware
+        run: |
+          docker run --rm firmware-builder ./build.sh
