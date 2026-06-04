@@ -21,7 +21,10 @@ jobs:
         run: |
           docker run --rm firmware-builder ./build.sh
 
-      - name: Debug Files
+      - name: Build Firmware
         run: |
-          pwd
-          find . -type f | grep -E "\.(elf|bin|hex|map)$" || true
+          docker run --rm firmware-builder sh -c "
+            ./build.sh
+            echo '=== BUILD OUTPUT ==='
+            find /workspace/build -type f
+          "
