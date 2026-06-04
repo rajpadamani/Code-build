@@ -1,3 +1,33 @@
+# name: Firmware Build
+
+# on:
+#   push:
+#     branches:
+#       - develop
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v4
+
+#       - name: Build Docker Image
+#         run: |
+#           docker build -t firmware-builder .
+
+#       - name: Build Firmware
+#         run: |
+#           docker run --rm firmware-builder ./build.sh
+
+#       - name: Build Firmware
+#         run: |
+#           docker run --rm firmware-builder sh -c "
+#             ./build.sh
+#             echo '=== BUILD OUTPUT ==='
+#             find /workspace/build -type f
+#           "
 name: Firmware Build
 
 on:
@@ -14,17 +44,26 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker Image
-        run: |
-          docker build -t firmware-builder .
+        run: docker build -t firmware-builder .
 
       - name: Build Firmware
         run: |
-          docker run --rm firmware-builder ./build.sh
+          mkdir -p build
 
-      - name: Build Firmware
-        run: |
-          docker run --rm firmware-builder sh -c "
+          docker run --rm \
+            -v ${{ github.workspace }}/build:/workspace/build \
+            firmware-builder \
             ./build.sh
-            echo '=== BUILD OUTPUT ==='
-            find /workspace/build -type f
-          "
+
+      - name: Verify Artifacts
+        run: ls -lah build
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware
+          path: |
+            build/*.elf
+            build/*.bin
+            build/*.hex
+            build/*.map
