@@ -37,6 +37,7 @@ int main(void)
     BOARD_InitHardware();
 
     PRINTF("hello world.\r\n");
+    PRINTF("This is demo of code building\r\n");
 
     while (1)
     {
